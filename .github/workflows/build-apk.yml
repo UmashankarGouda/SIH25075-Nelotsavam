@@ -1,0 +1,67 @@
+name: Build Nelotsavam APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build Next.js app
+      run: npm run build
+      
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
+        
+    - name: Install Capacitor CLI globally
+      run: npm install -g @capacitor/cli@6.1.2
+        
+    - name: Add Android platform
+      run: |
+        if [ ! -d "android" ]; then
+          cap add android
+        fi
+        
+    - name: Sync Capacitor
+      run: cap sync
+        
+    - name: Make gradlew executable
+      run: chmod +x android/gradlew
+      
+    - name: Build APK with detailed logging
+      run: |
+        cd android
+        ./gradlew clean
+        ./gradlew assembleDebug --no-daemon --info --stacktrace
+        
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: nelotsavam-apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk

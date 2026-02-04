@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#16a34a"/>
+  
+  <!-- Rice Plant -->
+  <path d="M256 120C256 120 280 140 320 160C350 175 380 200 380 240C380 260 370 270 360 270C350 270 340 260 340 240C340 220 320 200 300 190C280 180 256 160 256 160" fill="#fbbf24" stroke="#f59e0b" stroke-width="3"/>
+  
+  <!-- Rice Grains -->
+  <ellipse cx="325" cy="155" rx="8" ry="12" fill="#fbbf24" transform="rotate(15 325 155)"/>
+  <ellipse cx="340" cy="170" rx="8" ry="12" fill="#fbbf24" transform="rotate(25 340 170)"/>
+  <ellipse cx="350" cy="190" rx="8" ry="12" fill="#fbbf24" transform="rotate(35 350 190)"/>
+  <ellipse cx="355" cy="210" rx="8" ry="12" fill="#fbbf24" transform="rotate(45 355 210)"/>
+  <ellipse cx="358" cy="230" rx="8" ry="12" fill="#fbbf24" transform="rotate(50 358 230)"/>
+  
+  <!-- Left Rice Plant -->
+  <path d="M256 120C256 120 232 140 192 160C162 175 132 200 132 240C132 260 142 270 152 270C162 270 172 260 172 240C172 220 192 200 212 190C232 180 256 160 256 160" fill="#fbbf24" stroke="#f59e0b" stroke-width="3"/>
+  
+  <!-- Left Rice Grains -->
+  <ellipse cx="187" cy="155" rx="8" ry="12" fill="#fbbf24" transform="rotate(-15 187 155)"/>
+  <ellipse cx="172" cy="170" rx="8" ry="12" fill="#fbbf24" transform="rotate(-25 172 170)"/>
+  <ellipse cx="162" cy="190" rx="8" ry="12" fill="#fbbf24" transform="rotate(-35 162 190)"/>
+  <ellipse cx="157" cy="210" rx="8" ry="12" fill="#fbbf24" transform="rotate(-45 157 210)"/>
+  <ellipse cx="154" cy="230" rx="8" ry="12" fill="#fbbf24" transform="rotate(-50 154 230)"/>
+  
+  <!-- Stem -->
+  <rect x="250" y="270" width="12" height="150" fill="#16a34a" rx="6"/>
+  
+  <!-- Leaves -->
+  <path d="M256 300L220 320C210 325 205 335 210 345C215 355 225 360 235 355L256 340" fill="#22c55e"/>
+  <path d="M256 300L292 320C302 325 307 335 302 345C297 355 287 360 277 355L256 340" fill="#22c55e"/>
+  
+  <path d="M256 350L210 365C200 368 195 378 200 388C205 398 215 403 225 400L256 385" fill="#22c55e"/>
+  <path d="M256 350L302 365C312 368 317 378 312 388C307 398 297 403 287 400L256 385" fill="#22c55e"/>
+  
+  <!-- App Name Arc -->
+  <path id="circle" d="M 100 256 A 156 156 0 0 1 412 256" fill="none"/>
+  <text fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">
+    <textPath href="#circle" startOffset="25%">നെല്ലുത്സവം</textPath>
+  </text>
+</svg>

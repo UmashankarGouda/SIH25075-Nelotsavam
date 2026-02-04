@@ -1,0 +1,474 @@
+// Nelotsavam - Digital Harvest Festival Database Schema
+// This schema supports the complete lifecycle of rice farming with cultural elements
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User and Authentication Models
+model User {
+  id            String    @id @default(cuid())
+  phone         String    @unique
+  name          String
+  email         String?   @unique
+  image         String?
+  language      Language  @default(ENGLISH)
+  location      Json?     // {district, panchayat, village, coordinates}
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Farm Details
+  farmProfile   FarmProfile?
+  
+  // Gamification
+  dhanyaPoints  Int       @default(0)
+  totalPoints   Int       @default(0)
+  level         Int       @default(1)
+  badges        Badge[]
+  
+  // Relations
+  userSevas     UserSeva[]
+  posts         CommunityPost[]
+  comments      Comment[]
+  likes         Like[]
+  marketListings MarketListing[]
+  expertConsults ExpertConsultation[]
+  notifications Notification[]
+  
+  @@map("users")
+}
+
+model FarmProfile {
+  id              String         @id @default(cuid())
+  userId          String         @unique
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Farm Specifics
+  riceVariety     String         // Primary rice variety
+  waterSource     WaterSource
+  farmSize        Float?         // In acres
+  currentStage    LifecycleStage @default(LAND_PREPARATION)
+  
+  // Sustainability Progress
+  sustainabilityScore Json         // {water: 0-100, soil: 0-100, biodiversity: 0-100, organic: 0-100}
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@map("farm_profiles")
+}
+
+// Gamification and Tasks
+model Seva {
+  id              String         @id @default(cuid())
+  titleEn         String
+  titleMl         String
+  descriptionEn   String
+  descriptionMl   String
+  
+  // Classification
+  category        SevaCategory
+  lifecycleStage  LifecycleStage[]
+  difficulty      Difficulty     @default(EASY)
+  
+  // Rewards
+  dhanyaValue     Int            @default(10)
+  
+  // Requirements
+  requiresPhoto   Boolean        @default(false)
+  requiresGPS     Boolean        @default(false)
+  estimatedTime   Int?           // in minutes
+  
+  // Personalization
+  waterSources    WaterSource[]  // Which water sources this applies to
+  riceVarieties   String[]       // Specific varieties this applies to
+  
+  // Content
+  instructions    Json           // {steps: [], tips: [], benefits: []}
+  videoUrl        String?
+  imageUrl        String?
+  
+  isActive        Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Relations
+  userSevas       UserSeva[]
+  
+  @@map("sevas")
+}
+
+model UserSeva {
+  id            String       @id @default(cuid())
+  userId        String
+  sevaId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seva          Seva         @relation(fields: [sevaId], references: [id], onDelete: Cascade)
+  
+  status        SevaStatus   @default(ASSIGNED)
+  startedAt     DateTime?
+  completedAt   DateTime?
+  
+  // Proof of completion
+  proofPhotoUrl String?
+  proofLocation Json?        // GPS coordinates if required
+  notes         String?
+  
+  // Points awarded
+  pointsEarned  Int          @default(0)
+  bonusPoints   Int          @default(0)
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  
+  @@unique([userId, sevaId])
+  @@map("user_sevas")
+}
+
+model Badge {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type          BadgeType
+  titleEn       String       // e.g., "Jal Rakshak" (Water Guardian)
+  titleMl       String
+  descriptionEn String
+  descriptionMl String
+  iconUrl       String
+  
+  earnedAt      DateTime     @default(now())
+  
+  @@map("badges")
+}
+
+// Knowledge and Learning
+model KnowledgeContent {
+  id            String         @id @default(cuid())
+  titleEn       String
+  titleMl       String
+  bodyEn        String         // Rich text content
+  bodyMl        String
+  
+  category      KnowledgeCategory
+  contentType   ContentType    @default(ARTICLE)
+  
+  // Media
+  videoUrl      String?
+  imageUrls     String[]       @default([])
+  
+  // Metadata
+  readTime      Int?           // estimated read time in minutes
+  difficulty    Difficulty     @default(BEGINNER)
+  tags          String[]       @default([])
+  
+  isPublished   Boolean        @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  @@map("knowledge_content")
+}
+
+model ExpertConsultation {
+  id            String               @id @default(cuid())
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Question Details
+  question      String
+  category      ConsultationCategory
+  imageUrls     String[]             @default([])
+  location      Json?                // If location-specific
+  
+  // Expert Response
+  expertName    String?
+  response      String?
+  responseAt    DateTime?
+  
+  status        ConsultationStatus   @default(PENDING)
+  priority      Priority             @default(NORMAL)
+  
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  
+  @@map("expert_consultations")
+}
+
+// Community and Social Features
+model CommunityPost {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content       String
+  imageUrls     String[]     @default([])
+  tags          String[]     @default([])
+  
+  // Engagement
+  likes         Like[]
+  comments      Comment[]
+  likesCount    Int          @default(0)
+  commentsCount Int          @default(0)
+  
+  // Moderation
+  isApproved    Boolean      @default(false)
+  moderatedAt   DateTime?
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  
+  @@map("community_posts")
+}
+
+model Comment {
+  id            String         @id @default(cuid())
+  postId        String
+  userId        String
+  post          CommunityPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  content       String
+  parentId      String?        // For nested comments
+  parent        Comment?       @relation("CommentReplies", fields: [parentId], references: [id])
+  replies       Comment[]      @relation("CommentReplies")
+  
+  isApproved    Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  
+  @@map("comments")
+}
+
+model Like {
+  id            String         @id @default(cuid())
+  postId        String
+  userId        String
+  post          CommunityPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime       @default(now())
+  
+  @@unique([postId, userId])
+  @@map("likes")
+}
+
+// Marketplace
+model MarketListing {
+  id            String         @id @default(cuid())
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Item Details
+  title         String
+  description   String
+  itemType      ItemType       // INPUT or HARVEST
+  category      String         // Seeds, Fertilizer, Rice, etc.
+  
+  // Pricing
+  price         Float
+  priceUnit     String         // per kg, per liter, etc.
+  minQuantity   Float?         
+  maxQuantity   Float?
+  
+  // Media
+  imageUrls     String[]       @default([])
+  
+  // Location
+  location      Json           // District, panchayat for delivery/pickup
+  deliveryRadius Int?          // in kilometers
+  
+  // Organic Certification
+  isOrganic     Boolean        @default(false)
+  certificationUrl String?
+  sustainabilityScore Int?     // From user's farm profile
+  
+  // Availability
+  isAvailable   Boolean        @default(true)
+  expiresAt     DateTime?
+  
+  // Metrics
+  viewsCount    Int            @default(0)
+  inquiriesCount Int           @default(0)
+  
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  @@map("market_listings")
+}
+
+// Notifications and Communications
+model Notification {
+  id            String           @id @default(cuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type          NotificationType
+  titleEn       String
+  titleMl       String
+  bodyEn        String
+  bodyMl        String
+  
+  // Actions
+  actionUrl     String?
+  actionData    Json?            // Additional data for the action
+  
+  // Status
+  isRead        Boolean          @default(false)
+  readAt        DateTime?
+  
+  createdAt     DateTime         @default(now())
+  
+  @@map("notifications")
+}
+
+// Weather Data (cached for offline access)
+model WeatherData {
+  id            String       @id @default(cuid())
+  location      String       // District or coordinates
+  date          DateTime     @db.Date
+  
+  // Current conditions
+  temperature   Float
+  humidity      Int
+  rainfall      Float        @default(0)
+  windSpeed     Float?
+  
+  // Forecast (next 3 days)
+  forecast      Json         // Array of daily forecasts
+  
+  // Farming advice based on weather
+  advice        String?
+  
+  createdAt     DateTime     @default(now())
+  
+  @@unique([location, date])
+  @@map("weather_data")
+}
+
+// Enums
+enum Language {
+  ENGLISH
+  MALAYALAM
+}
+
+enum WaterSource {
+  CANAL
+  BOREWELL
+  RAIN_FED
+  RIVER
+  POND
+  MIXED
+}
+
+enum LifecycleStage {
+  LAND_PREPARATION
+  NURSERY
+  TRANSPLANTING
+  VEGETATIVE_GROWTH
+  REPRODUCTIVE_GROWTH
+  MATURATION
+  HARVEST
+  POST_HARVEST
+}
+
+enum SevaCategory {
+  LAND_PREPARATION
+  WATER_MANAGEMENT
+  NUTRIENT_MANAGEMENT
+  PEST_DISEASE_CONTROL
+  HARVEST_POST_HARVEST
+  SUSTAINABILITY
+  COMMUNITY
+}
+
+enum Difficulty {
+  BEGINNER
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum SevaStatus {
+  ASSIGNED
+  STARTED
+  IN_PROGRESS
+  PENDING_VERIFICATION
+  COMPLETED
+  SKIPPED
+  EXPIRED
+}
+
+enum BadgeType {
+  WATER_GUARDIAN     // Jal Rakshak
+  SOIL_FRIEND        // Bhumi Mitra
+  ORGANIC_CHAMPION   // Prakrutik Yoddha
+  KNOWLEDGE_SEEKER   // Gyan Pippasu
+  COMMUNITY_LEADER   // Samudayik Neta
+  ECO_WARRIOR        // Paryavaran Yoddha
+  HARVEST_MASTER     // Fasal Guru
+}
+
+enum KnowledgeCategory {
+  SUSTAINABLE_METHODS
+  INDIGENOUS_VARIETIES
+  ORGANIC_SOLUTIONS
+  WATER_CONSERVATION
+  SOIL_HEALTH
+  PEST_MANAGEMENT
+  MARKET_INSIGHTS
+  GOVERNMENT_SCHEMES
+}
+
+enum ContentType {
+  ARTICLE
+  VIDEO
+  INFOGRAPHIC
+  AUDIO
+  INTERACTIVE
+}
+
+enum ConsultationCategory {
+  PEST_DISEASE
+  WATER_MANAGEMENT
+  SOIL_HEALTH
+  NUTRITION
+  HARVEST
+  MARKETING
+  GENERAL
+}
+
+enum ConsultationStatus {
+  PENDING
+  IN_PROGRESS
+  ANSWERED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum ItemType {
+  INPUT      // Seeds, fertilizers, tools
+  HARVEST    // Rice and produce
+}
+
+enum NotificationType {
+  SEVA_ASSIGNED
+  SEVA_REMINDER
+  BADGE_EARNED
+  EXPERT_RESPONSE
+  WEATHER_ALERT
+  COMMUNITY_UPDATE
+  MARKET_INQUIRY
+  SYSTEM_UPDATE
+}

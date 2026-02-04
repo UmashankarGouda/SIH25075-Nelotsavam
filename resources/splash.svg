@@ -1,0 +1,59 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0fdf4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#dbeafe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fef3c7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="url(#bgGradient)"/>
+  
+  <!-- Main Logo Circle -->
+  <circle cx="540" cy="960" r="200" fill="#16a34a" stroke="#15803d" stroke-width="8"/>
+  
+  <!-- Rice Plant - Right -->
+  <path d="M540 800C540 800 580 830 640 860C690 885 740 920 740 980C740 1010 725 1025 710 1025C695 1025 680 1010 680 980C680 950 640 920 600 905C580 895 540 870 540 870" fill="#fbbf24" stroke="#f59e0b" stroke-width="5"/>
+  
+  <!-- Rice Grains - Right -->
+  <ellipse cx="645" cy="845" rx="12" ry="18" fill="#fbbf24" transform="rotate(15 645 845)"/>
+  <ellipse cx="670" cy="870" rx="12" ry="18" fill="#fbbf24" transform="rotate(25 670 870)"/>
+  <ellipse cx="690" cy="900" rx="12" ry="18" fill="#fbbf24" transform="rotate(35 690 900)"/>
+  <ellipse cx="705" cy="930" rx="12" ry="18" fill="#fbbf24" transform="rotate(45 705 930)"/>
+  <ellipse cx="710" cy="960" rx="12" ry="18" fill="#fbbf24" transform="rotate(50 710 960)"/>
+  
+  <!-- Rice Plant - Left -->
+  <path d="M540 800C540 800 500 830 440 860C390 885 340 920 340 980C340 1010 355 1025 370 1025C385 1025 400 1010 400 980C400 950 440 920 480 905C500 895 540 870 540 870" fill="#fbbf24" stroke="#f59e0b" stroke-width="5"/>
+  
+  <!-- Rice Grains - Left -->
+  <ellipse cx="435" cy="845" rx="12" ry="18" fill="#fbbf24" transform="rotate(-15 435 845)"/>
+  <ellipse cx="410" cy="870" rx="12" ry="18" fill="#fbbf24" transform="rotate(-25 410 870)"/>
+  <ellipse cx="390" cy="900" rx="12" ry="18" fill="#fbbf24" transform="rotate(-35 390 900)"/>
+  <ellipse cx="375" cy="930" rx="12" ry="18" fill="#fbbf24" transform="rotate(-45 375 930)"/>
+  <ellipse cx="370" cy="960" rx="12" ry="18" fill="#fbbf24" transform="rotate(-50 370 960)"/>
+  
+  <!-- Main Stem -->
+  <rect x="530" y="1030" width="20" height="250" fill="#16a34a" rx="10"/>
+  
+  <!-- Leaves -->
+  <path d="M540 1100L460 1130C440 1138 430 1158 438 1178C446 1198 466 1208 486 1200L540 1170" fill="#22c55e"/>
+  <path d="M540 1100L620 1130C640 1138 650 1158 642 1178C634 1198 614 1208 594 1200L540 1170" fill="#22c55e"/>
+  
+  <path d="M540 1180L430 1205C410 1210 400 1230 405 1250C410 1270 430 1280 450 1275L540 1250" fill="#22c55e"/>
+  <path d="M540 1180L650 1205C670 1210 680 1230 675 1250C670 1270 650 1280 630 1275L540 1250" fill="#22c55e"/>
+  
+  <!-- App Title -->
+  <text x="540" y="1400" text-anchor="middle" fill="#16a34a" font-family="Arial, sans-serif" font-size="64" font-weight="bold">നെല്ലുത്സവം</text>
+  <text x="540" y="1470" text-anchor="middle" fill="#16a34a" font-family="Arial, sans-serif" font-size="32" font-weight="normal">Digital Harvest Festival</text>
+  
+  <!-- Tagline -->
+  <text x="540" y="1550" text-anchor="middle" fill="#15803d" font-family="Arial, sans-serif" font-size="24" font-weight="normal">Empowering Kerala's Rice Farmers</text>
+  
+  <!-- Loading indicator area -->
+  <rect x="440" y="1620" width="200" height="4" rx="2" fill="#e5e7eb"/>
+  <rect x="440" y="1620" width="60" height="4" rx="2" fill="#16a34a">
+    <animate attributeName="x" values="440;580;440" dur="2s" repeatCount="indefinite"/>
+  </rect>
+</svg>
