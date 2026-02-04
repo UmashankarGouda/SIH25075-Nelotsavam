@@ -1,10 +1,10 @@
-# നെല്ലഉത്സവം (Nelotsavam) 🌾
+# Nelotsavam 
 
 **Empowering Kerala's Rice Farmers through Digital Innovation**
 
 A comprehensive rice farming platform built for Smart India Hackathon 2025, combining traditional knowledge with modern technology to support sustainable agriculture in Kerala.
 
-## 🎯 Project Overview
+##  Project Overview
 
 Nelotsavam is a gamified, multilingual platform that transforms rice farming through:
 - **Gamified Learning**: Complete "Sevas" (farming tasks) to earn rewards
@@ -13,24 +13,24 @@ Nelotsavam is a gamified, multilingual platform that transforms rice farming thr
 - **Sustainable Practices**: Promote organic and eco-friendly farming
 - **Marketplace**: Trade inputs and harvest with sustainability scores
 
-## ✨ Key Features
+##  Key Features
 
-### 🏆 Gamification System
+###  Gamification System
 - **Sevas**: Farming tasks aligned with rice lifecycle stages
 - **Dhanya Points**: Reward system for completed activities
 - **Badges**: Achievements like "Jal Rakshak" (Water Guardian)
 - **Leaderboards**: Community rankings and recognition
 
-### 🌱 Rice Farming Lifecycle
+###  Rice Farming Lifecycle
 - Land Preparation → Nursery → Transplanting
 - Vegetative Growth → Reproductive Growth → Maturation
 - Harvest → Post-Harvest Processing
 
-### 🌐 Multilingual Support
+###  Multilingual Support
 - **Malayalam** (മലയാളം): Primary language for Kerala farmers
 - **English**: Secondary language support
 
-### 📱 Technology Stack
+###  Technology Stack
 - **Frontend**: Next.js 15 with App Router, React 19, TailwindCSS 4
 - **Backend**: Prisma ORM with PostgreSQL
 - **Authentication**: NextAuth with Prisma adapter
@@ -40,7 +40,7 @@ Nelotsavam is a gamified, multilingual platform that transforms rice farming thr
 - **Real-time**: Socket.io ready
 - **PWA**: Next-PWA for offline capabilities
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
@@ -85,7 +85,7 @@ The `.env` file is already configured with a local Prisma PostgreSQL instance:
 DATABASE_URL="prisma+postgres://localhost:51213/?api_key=..."
 ```
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```
 nelotsavam/
@@ -105,7 +105,7 @@ nelotsavam/
 └── package.json           # Dependencies
 ```
 
-## 📊 Database Schema
+##  Database Schema
 
 Comprehensive schema supporting:
 - **Users & Authentication**: Phone-based login, multilingual preferences
@@ -116,7 +116,7 @@ Comprehensive schema supporting:
 - **Weather Integration**: Location-based farming advice
 - **Knowledge Base**: Sustainable farming content
 
-## 🎮 Gamification Elements
+##  Gamification Elements
 
 ### Seva Categories
 - 🌱 **Land Preparation**: Soil health, field preparation
@@ -136,7 +136,7 @@ Comprehensive schema supporting:
 - 🌍 **Paryavaran Yoddha** (Eco Warrior)
 - 🌾 **Fasal Guru** (Harvest Master)
 
-## 🛠️ Development Commands
+##  Development Commands
 
 ```bash
 # Development
@@ -152,31 +152,31 @@ npx prisma generate  # Generate Prisma client
 npx prisma migrate dev  # Run migrations
 ```
 
-## 🌟 Current Status
+##  Current Status
 
-✅ **Completed**
+ **Completed**
 - Project setup and configuration
 - Database schema design and migrations
 - Beautiful landing page with Malayalam support
 - UI component library (shadcn/ui)
 - Development environment setup
 
-🚧 **In Progress**
+ **In Progress**
 - User authentication system
 - Core Seva management
 - Community features
 - Expert consultation system
 
-📋 **Planned**
+ **Planned**
 - Mobile PWA optimization
 - Weather API integration
 - Advanced gamification features
 - Production deployment
 
-## 🤝 Contributing
+##  Contributing
 
 Built for **Smart India Hackathon 2025**
 
-## 📄 License
+##  License
 
 © 2024 Nelotsavam Team. Built with ❤️ for Kerala's farmers.
